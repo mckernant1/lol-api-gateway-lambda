@@ -1,0 +1,126 @@
+# This is the SAM template that represents the architecture of your serverless application
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-basics.html
+
+# The AWSTemplateFormatVersion identifies the capabilities of the template
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/format-version-structure.html
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  lol-api-gateway-lambda
+
+# Transform section specifies one or more macros that AWS CloudFormation uses to process your template
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
+Transform:
+- AWS::Serverless-2016-10-31
+
+# Resources declares the AWS resources that you want to include in the stack
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
+Resources:
+  # Each Lambda function is defined by properties:
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  LolApiGateway:
+    Type: AWS::Serverless::Api
+    Auth:
+      ApiKeyRequired: false
+    Properties:
+      StageName: Prod
+
+  # This is a Lambda function config associated with the source code: game.js
+  getTournamentsForLeague:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/tournaments.getTournamentsForLeague
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Get
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /tournaments/{League}
+            Method: GET
+            RestApiId: !Ref LolApiGateway
+
+  getGamesForTournament:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/tournaments.getGamesForTournament
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Get
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path:  /games/{Tournament}
+            Method: GET
+            RestApiId: !Ref LolApiGateway
+
+  getAllLeagues:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/leagues.getAllLeagues
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Get
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /leagues
+            Method: GET
+            RestApiId: !Ref LolApiGateway
+
+  getLeague:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/leagues.getLeague
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Get
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /league/{code}
+            Method: GET
+            RestApiId: !Ref LolApiGateway
+
+  getPlayersOnTeam:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/players.getPlayersOnTeam
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Get
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /players/{Team}
+            Method: GET
+            RestApiId: !Ref LolApiGateway

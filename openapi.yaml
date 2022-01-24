@@ -1,0 +1,192 @@
+openapi: 3.0.2
+info:
+  title: Lol Esports Api
+  version: "1.0"
+servers:
+- url: https://api.server.test/v1
+paths:
+  /tournaments/{League}:
+    get:
+      operationId: getTournamentsForLeague
+      parameters:
+      - description: The League to get tournaments for
+        in: path
+        name: League
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Tournament'
+                type: array
+          description: The tournaments for the league
+      x-accepts: application/json
+  /games/{Tournament}:
+    get:
+      operationId: getGamesForTournament
+      parameters:
+      - description: The Tournament to get games for
+        in: path
+        name: Tournament
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Game'
+                type: array
+          description: The games for the Tournament
+      x-accepts: application/json
+  /leagues:
+    get:
+      operationId: getLeagues
+      parameters: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/League'
+                type: array
+          description: Get all the leagues
+      x-accepts: application/json
+  /leagues/{code}:
+    get:
+      operationId: getLeagueByCode
+      parameters:
+      - description: Get a league by code
+        in: path
+        name: code
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/League'
+          description: Get a league by code
+      x-accepts: application/json
+  /players/{Team}:
+    get:
+      parameters:
+      - description: Get players on a team
+        in: path
+        name: team
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+          description: The players on the associated team
+      x-accepts: application/json
+components:
+  schemas:
+    Tournament:
+      additionalProperties:
+        readOnly: true
+      example:
+        League: League
+        IsPlayoffs: true
+        IsQualifier: true
+        Year: 0.8008281904610115
+        DateStart: DateStart
+        IsOfficial: true
+        Name: Name
+      properties:
+        League:
+          type: string
+        Name:
+          type: string
+        DateStart:
+          type: string
+        IsOfficial:
+          type: boolean
+        IsPlayoffs:
+          type: boolean
+        IsQualifier:
+          type: boolean
+        Year:
+          type: number
+      type: object
+    League:
+      example:
+        League: League
+        IsOfficial: true
+        Region: Region
+        Level: Level
+        League_Short: League_Short
+      properties:
+        League_Short:
+          type: string
+        IsOfficial:
+          type: boolean
+        League:
+          type: string
+        Level:
+          type: string
+        Region:
+          type: string
+      type: object
+    Game:
+      example:
+        MatchId: MatchId
+        Tournament: Tournament
+        DateTime: DateTime
+        GameId: GameId
+        Gamename: Gamename
+      properties:
+        Tournament:
+          type: string
+        GameId:
+          type: string
+        DateTime:
+          type: string
+        Gamename:
+          type: string
+        MatchId:
+          type: string
+      type: object
+    Player:
+      properties:
+        ID:
+          type: string
+        Age:
+          type: number
+        Country:
+          type: string
+        Residency:
+          type: string
+        Role:
+          type: string
+        Team:
+          type: string
+      type: object
+    Team:
+      properties:
+        Short:
+          type: string
+        IsDisbanded:
+          type: boolean
+        Location:
+          type: string
+        Name:
+          type: string
+        Region:
+          type: string
+      type: object
+
