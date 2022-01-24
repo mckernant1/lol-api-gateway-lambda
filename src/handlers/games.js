@@ -1,5 +1,4 @@
 const {ddb, GAMES_TABLE_NAME} = require("./data-access");
-const {Game, Tournament} = require("@mckernant1/lol_esports_api");
 const {unmarshall} = require("@aws-sdk/util-dynamodb");
 
 exports.getGamesForTournament = async (event) => {
@@ -7,7 +6,7 @@ exports.getGamesForTournament = async (event) => {
     TableName: GAMES_TABLE_NAME,
     KeyConditionExpression: `Tournament = :desiredTourney`,
     ExpressionAttributeValues: {
-      ':desiredTourney': event.pathParameters.Tournament
+      ':desiredTourney': { S: event.pathParameters.Tournament }
     }
   });
   return {

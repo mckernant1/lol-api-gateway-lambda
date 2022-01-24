@@ -1,6 +1,5 @@
 const {ddb, LEAGUES_TABLE_NAME} = require("./data-access");
-const {League} = require("@mckernant1/lol_esports_api");
-const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
+const {unmarshall} = require("@aws-sdk/util-dynamodb");
 
 
 exports.getAllLeagues = async (event) => {
@@ -18,7 +17,9 @@ exports.getAllLeagues = async (event) => {
 exports.getLeague = async (event) => {
   let res = await ddb.getItem({
     TableName: LEAGUES_TABLE_NAME,
-    Key: event.pathParameters.code
+    Key: {
+      League_Short: { S: event.pathParameters.code }
+    }
   })
   return {
     statusCode: 200,
