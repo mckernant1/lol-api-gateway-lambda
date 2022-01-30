@@ -15,12 +15,10 @@ Transform:
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
 Resources:
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
   LolApiGateway:
     Type: AWS::Serverless::Api
     Auth:
-      ApiKeyRequired: false
+      ApiKeyRequired: true
     Properties:
       StageName: Prod
 
@@ -43,6 +41,8 @@ Resources:
             Path: /tournaments/{League}
             Method: GET
             RestApiId: !Ref LolApiGateway
+            Auth:
+              ApiKeyRequired: true
 
   getGamesForTournament:
     Type: AWS::Serverless::Function
@@ -63,6 +63,8 @@ Resources:
             Path:  /games/{Tournament}
             Method: GET
             RestApiId: !Ref LolApiGateway
+            Auth:
+              ApiKeyRequired: true
 
   getAllLeagues:
     Type: AWS::Serverless::Function
@@ -83,6 +85,8 @@ Resources:
             Path: /leagues
             Method: GET
             RestApiId: !Ref LolApiGateway
+            Auth:
+              ApiKeyRequired: true
 
   getLeague:
     Type: AWS::Serverless::Function
@@ -103,6 +107,8 @@ Resources:
             Path: /league/{code}
             Method: GET
             RestApiId: !Ref LolApiGateway
+            Auth:
+              ApiKeyRequired: true
 
   getPlayersOnTeam:
     Type: AWS::Serverless::Function
@@ -123,3 +129,5 @@ Resources:
             Path: /players/{Team}
             Method: GET
             RestApiId: !Ref LolApiGateway
+            Auth:
+              ApiKeyRequired: true
