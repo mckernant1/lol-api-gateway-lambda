@@ -2,6 +2,7 @@ const {ddb, PLAYERS_TABLE_NAME, PLAYERS_TABLE_TEAM_INDEX} = require("./data-acce
 const {unmarshall} = require("@aws-sdk/util-dynamodb");
 
 exports.getPlayersOnTeam = async (event) => {
+  console.log(`Team: ${event.pathParameters.Team}`)
   let res = await ddb.query({
     TableName: PLAYERS_TABLE_NAME,
     IndexName: PLAYERS_TABLE_TEAM_INDEX,
