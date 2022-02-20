@@ -2,12 +2,12 @@ const {ddb, TOURNAMENTS_TABLE_NAME} = require("./data-access");
 const {unmarshall} = require("@aws-sdk/util-dynamodb");
 
 exports.getTournamentsForLeague = async (event) => {
-  console.log(`League: ${event.pathParameters.League}`)
+  console.log(`League: ${event.pathParameters.leagueId}`)
   let res = await ddb.query({
     TableName: TOURNAMENTS_TABLE_NAME,
-    KeyConditionExpression: `League = :desiredLeague`,
+    KeyConditionExpression: `leagueId = :desiredLeague`,
     ExpressionAttributeValues: {
-      ':desiredLeague': { S: event.pathParameters.League }
+      ':desiredLeague': { S: event.pathParameters.leagueId }
     }
   });
   return {

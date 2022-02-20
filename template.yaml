@@ -10,7 +10,7 @@ Description: >-
 # Transform section specifies one or more macros that AWS CloudFormation uses to process your template
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
 Transform:
-- AWS::Serverless-2016-10-31
+  - AWS::Serverless-2016-10-31
 
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
@@ -38,7 +38,7 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /tournaments/{League}
+            Path: /tournaments/{leagueId}
             Method: GET
             RestApiId: !Ref LolApiGateway
             Auth:
@@ -47,7 +47,7 @@ Resources:
   getGamesForTournament:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/games.getGamesForTournament
+      Handler: src/handlers/matches.getMatchesForTournament
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -60,7 +60,7 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path:  /games/{Tournament}
+            Path: /matches/{tournamentId}
             Method: GET
             RestApiId: !Ref LolApiGateway
             Auth:
@@ -104,7 +104,7 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /league/{code}
+            Path: /leagues/{leagueId}
             Method: GET
             RestApiId: !Ref LolApiGateway
             Auth:
@@ -126,7 +126,7 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /players/{Team}
+            Path: /players/{teamId}
             Method: GET
             RestApiId: !Ref LolApiGateway
             Auth:

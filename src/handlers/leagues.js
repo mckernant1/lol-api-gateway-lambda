@@ -15,11 +15,11 @@ exports.getAllLeagues = async (event) => {
 }
 
 exports.getLeague = async (event) => {
-  console.log(`code: ${event.pathParameters.code}`)
+  console.log(`code: ${event.pathParameters.leagueId}`)
   let res = await ddb.getItem({
     TableName: LEAGUES_TABLE_NAME,
     Key: {
-      League_Short: { S: event.pathParameters.code }
+      leagueId: { S: event.pathParameters.leagueId }
     }
   })
   return {

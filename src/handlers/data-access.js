@@ -6,12 +6,12 @@ exports.ddb = new DynamoDB({
 
 });
 
-exports.GAMES_TABLE_NAME = 'Games'
+exports.MATCHES_TABLE_NAME = 'Matches'
 
 exports.LEAGUES_TABLE_NAME = 'Leagues'
 
 exports.PLAYERS_TABLE_NAME = 'Players'
-exports.PLAYERS_TABLE_TEAM_INDEX = 'Team-ID-index'
+exports.PLAYERS_TABLE_TEAM_INDEX = 'teamId-id-index'
 
 exports.TEAMS_TABLE_NAME = 'Teams'
 
