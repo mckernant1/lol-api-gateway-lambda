@@ -1,10 +1,10 @@
-const {ddb, LEAGUES_TABLE_NAME} = require("./data-access");
+const {ddb, TEAMS_TABLE_NAME} = require("./data-access");
 const {unmarshall} = require("@aws-sdk/util-dynamodb");
 
 
-exports.getAllLeagues = async (event) => {
+exports.getAllTeams = async (event) => {
   let res = await ddb.scan({
-    TableName: LEAGUES_TABLE_NAME
+    TableName: TEAMS_TABLE_NAME
   });
   const x = res.Items.map(it => unmarshall(it))
   return {
@@ -14,16 +14,16 @@ exports.getAllLeagues = async (event) => {
   };
 }
 
-exports.getLeague = async (event) => {
+exports.getTeam = async (event) => {
   let res = await ddb.getItem({
-    TableName: LEAGUES_TABLE_NAME,
+    TableName: TEAMS_TABLE_NAME,
     Key: {
-      leagueId: { S: event.pathParameters.leagueId }
+      teamId: {S: event.pathParameters.teamId}
     }
-  })
+  });
   return {
     statusCode: 200,
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(unmarshall(res.Item))
-  }
+  };
 }

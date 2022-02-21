@@ -131,3 +131,46 @@ Resources:
             RestApiId: !Ref LolApiGateway
             Auth:
               ApiKeyRequired: true
+  getAllTeams:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/teams.getAllTeams
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Get
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /teams
+            Method: GET
+            RestApiId: !Ref LolApiGateway
+            Auth:
+              ApiKeyRequired: true
+
+  getTeam:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/teams.getTeam
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Get
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /teams/{teamId}
+            Method: GET
+            RestApiId: !Ref LolApiGateway
+            Auth:
+              ApiKeyRequired: true
